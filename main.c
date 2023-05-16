@@ -17,6 +17,7 @@ char* hexxx(int number) {
     return 0;
 }
 
+//the function that does everything
 int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
     unsigned int end_index = 32*2 + lenght_of_buffer*2;
     unsigned int index = 32*2;
