@@ -3,6 +3,7 @@
 #include <string.h>
 #include "instructions.c"
 
+
 char* hexadd(int number){
     char str[]={'0','0','0','0','\0'};
     int number2 = number;
@@ -30,35 +31,33 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         {
             printstr[i]=' ';
         }
-        
-        if (hex_string[index]=='b'&&hex_string[index+1]=='b')
-        {
-            printstr[0]='b';
-            printstr[1]='b';
-            printstr[2]=hex_string[index+2];
-            printstr[3]=hex_string[index+3];
-            printstr[4]=hex_string[index+4];
-            printstr[5]=hex_string[index+5];
-            
-            printf("%s",printstr);
-            printf("mov bx, %c%c%c%c\n",hex_string[index+4],hex_string[index+5],hex_string[index+2],hex_string[index+3]);
+        char sub_str[9];
+        strncpy(sub_str, bin_string + bin_index, 8);
+        sub_str[8] = '\0';
 
-            index+=6;
-            bin_index+=24;
-            continue;
-        }
-        if (hex_string[index]=='c'&&hex_string[index+1]=='d')
+
+        //MOV immediate to Register
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1')
         {
-            printstr[0]='c';
-            printstr[1]='d';
-            printstr[2]=hex_string[index+2];
-            printstr[3]=hex_string[index+3];
-            printf("%s",printstr);
-            printf("int %c%c\n",hex_string[index+2],hex_string[index+3]);
-            index+=4;
-            bin_index+=16;
+            MOV_Immediate_Register(sub_str,&index,&bin_index,hex_string);
             continue;
         }
+        
+        //INT Specified
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            INT_Specified(sub_str,&index,&bin_index,hex_string);
+            continue;
+        }
+
+        //ADD Reg Memory with register to either
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0')
+        {
+            ADD_Register(sub_str,&index,&bin_index,hex_string,bin_string);
+            continue;
+        }
+        
+        
         else
         {
             printstr[0]=hex_string[index];
