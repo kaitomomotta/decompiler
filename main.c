@@ -53,18 +53,34 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         //ADD Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0')
         {
-            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"add ", ", ","");
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"add ", ", ","",0);
             continue;
         }
         
         //XOR Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0')
         {
-            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"xor ", ", ", "");
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"xor ", ", ", "",0);
             continue;
         }
-        
-        
+
+        //MOV Register/Memory to/from Register
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0')
+        {
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"mov ", ", ", "",0);
+            continue;
+        }
+
+        //LEA  Load EA to Register
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            char sub[3];
+            strncpy(sub,hex_string+index+4,2);
+            sub[2]=0;
+            int disp = (int)strtol(sub,NULL,16);
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,0,0,13,0,6,"lea ", ", ", "",disp);
+            continue;
+        }
         
         else
         {

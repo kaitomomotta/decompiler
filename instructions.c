@@ -113,6 +113,19 @@ char* RMTable(char* rm)
     }
 }
 
+char* ModDisp(char* mod)
+{
+    if (strcmp(mod,"01")==0)
+    {
+        return "+2";
+    }
+    if (strcmp(mod,"10")==0)
+    {
+        return "+4";
+    }
+    return "";
+}
+
 void MOV_Immediate_Register(char* sub_str,int* index, int* bin_index,char* hex_string){
     char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
     char* reg;
@@ -159,7 +172,7 @@ void INT_Specified(char* sub_str,int* index, int* bin_index,char* hex_string)
 
 void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
     int mod_index,int reg_index, int d_index,int w_index,int rm_index,int s_index, int hex_length,
-    char* left, char* middle, char* right)
+    char* left, char* middle, char* right,int disp)
 {
     char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
     char* reg;
@@ -189,17 +202,33 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
     }
     strncpy(printstr,hex_string+*index,hex_length);
     printf("%s",printstr);
-    if (strcmp(mod,"01")==0||strcmp(mod,"10")==0)
+    if (strcmp(mod,"01")==0||strcmp(mod,"10")==0||strcmp(mod,"00")==0)
     {
-        if (sub_str[d_index]=='0')
+        if (disp==0)
         {
-            //d==0
-            printf("%s[%s]%s%s%s\n",left, rm, middle, reg, right);
+            if (sub_str[d_index]=='0')
+            {
+                //d==0
+                printf("%s[%s]%s%s%s\n",left, rm, middle, reg, right);
+            }
+            else
+            {
+                //d==1
+                printf("%s%s%s[%s]%s\n",left, reg, middle,rm, right);
+            }
         }
         else
         {
-            //d==1
-            printf("%s%s%s[%s]%s\n",left, reg, middle,rm, right);
+            if (sub_str[d_index]=='0')
+            {
+                //d==0
+                printf("%s[%s+%i]%s%s%s\n",left, rm,disp, middle, reg, right);
+            }
+            else
+            {
+                //d==1
+                printf("%s%s%s[%s+%i]%s\n",left, reg, middle,rm,disp, right);
+            }
         }
     }
     else
