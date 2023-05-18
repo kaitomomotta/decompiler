@@ -3,9 +3,9 @@
 #include <string.h>
 
 
-char* RegTable(char* regstr,int w)
+char* RegTable(char* regstr,char w)
 {
-    if (w==1)
+    if (w=='1')
     {
         if (strcmp(regstr,"000")==0)
         {
@@ -155,82 +155,11 @@ void INT_Specified(char* sub_str,int* index, int* bin_index,char* hex_string)
     *bin_index+=16;
 }
 
-void ADD_Register(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string)
-{
-    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
-    char* reg;
-    char* rm;
-    //find reg
-    char regstr[4];
-    strncpy(regstr,bin_string+*bin_index+10,3);
-    //find rm
-    char rmstr[4];
-    strncpy(rmstr,bin_string+*bin_index+12,3);
-    rmstr[3]=0;
-    //find mod
-    char* mod[4];
-    strncpy(mod,bin_string+8,2);
-    if (sub_str[7]=='1')
-    {
-        //w=1
-        reg=RegTable(regstr,1);
-        if (strcmp(mod,"11")==0)
-        {
-            rm=RegTable(rmstr,1);
-        }
-        else
-        {
-            //mod == "00"
-            rm=RMTable(rmstr);
-        }
-        strncpy(printstr,hex_string+*index,4);
-        printf("%s",printstr);
-        if (sub_str[6]=='0')
-        {
-            //d==0
-            printf("add [%s], %s\n", rm,reg);
-        }
-        else
-        {
-            //d==1
-            printf("add [%s], %s\n", reg,rm);
-        }
-        *index+=4;
-        *bin_index+=16;
-        return;
-    }
-    else
-    {
-        //w=0
-        reg=RegTable(regstr,0);
-        if (strcmp(mod,"11")==0)
-        {
-            rm=RegTable(rmstr,0);
-        }
-        else
-        {
-            //mod == "00"
-            rm=RMTable(rmstr);
-        }
-        strncpy(printstr,hex_string+*index,4);
-        printf("%s",printstr);
-        if (sub_str[6]=='0')
-        {
-            //d==0
-            printf("add [%s], %s\n", rm,reg);
-        }
-        else
-        {
-            //d==1
-            printf("add [%s], %s\n", reg,rm);
-        }
-        *index+=4;
-        *bin_index+=16;
-        return;
-    }
-}
 
-void XOR_Register(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string)
+
+void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int mod_index,int reg_index, int d_index,int w_index,int rm_index,int s_index, int hex_length,
+    char* left, char* middle, char* right)
 {
     char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
     char* reg;
@@ -238,71 +167,122 @@ void XOR_Register(char* sub_str,int* index, int* bin_index,char* hex_string,char
     //find reg
     char regstr[4];
     regstr[3]=0;
-    strncpy(regstr,bin_string+*bin_index+10,3);
+    strncpy(regstr,bin_string+*bin_index+reg_index,3);
     //find rm
     char rmstr[4];
-    strncpy(rmstr,bin_string+*bin_index+12,3);
+    strncpy(rmstr,bin_string+*bin_index+rm_index,3);
     rmstr[3]=0;
     //find mod
-    char* mod[3];
-    strncpy(mod,bin_string+8,2);
+    char mod[3];
+    strncpy(mod,bin_string+*bin_index+mod_index,2);
     mod[2]=0;
-    if (sub_str[7]=='1')
+
+    reg=RegTable(regstr,sub_str[w_index]);
+    if (strcmp(mod,"11")==0)
     {
-        //w=1
-        reg=RegTable(regstr,1);
-        if (strcmp(mod,"11")==0)
-        {
-            rm=RegTable(rmstr,1);
-        }
-        else
-        {
-            //mod == "00"
-            rm=RMTable(rmstr);
-        }
-        strncpy(printstr,hex_string+*index,4);
-        printf("%s",printstr);
-        if (sub_str[6]=='0')
-        {
-            //d==0
-            printf("xor %s, %s\n", rm,reg);
-        }
-        else
-        {
-            //d==1
-            printf("xor %s, %s\n", reg,rm);
-        }
-        *index+=4;
-        *bin_index+=16;
-        return;
+        rm=RegTable(rmstr,sub_str[w_index]);
     }
     else
     {
-        //w=0
-        reg=RegTable(regstr,0);
-        if (strcmp(mod,"11")==0)
-        {
-            rm=RegTable(rmstr,0);
-        }
-        else
-        {
-            //mod == "00"
-            rm=RMTable(rmstr);
-        }
-        strncpy(printstr,hex_string+*index,4);
-        printf("%s",printstr);
-        if (sub_str[6]=='0')
+        //mod == "00"
+        rm=RMTable(rmstr);
+    }
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+    if (strcmp(mod,"01")==0||strcmp(mod,"10")==0)
+    {
+        if (sub_str[d_index]=='0')
         {
             //d==0
-            printf("add [%s], %s\n", rm,reg);
+            printf("%s[%s]%s%s%s\n",left, rm, middle, reg, right);
         }
         else
         {
             //d==1
-            printf("add [%s], %s\n", reg,rm);
+            printf("%s%s%s[%s]%s\n",left, reg, middle,rm, right);
         }
-        *index+=4;
-        *bin_index+=16;
-        return;
     }
+    else
+    {
+        if (sub_str[d_index]=='0')
+        {
+            //d==0
+            printf("%s%s%s%s%s\n",left, rm, middle, reg, right);
+        }
+        else
+        {
+            //d==1
+            printf("%s%s%s%s%s\n",left, reg, middle,rm, right);
+        }
+    }
+    
+    *index+=hex_length;
+    *bin_index+=hex_length*4;
+    return;
+
+}
+
+void Generic_Process_One(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int mod_index,int reg_index, int d_index,int w_index,int rm_index,int s_index, int hex_length,
+    char* left, char* middle, char* right, int data_index)
+{
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* reg;
+    char* rm;
+    //find reg
+    char regstr[4];
+    regstr[3]=0;
+    strncpy(regstr,bin_string+*bin_index+reg_index,3);
+    //find rm
+    char rmstr[4];
+    strncpy(rmstr,bin_string+*bin_index+rm_index,3);
+    rmstr[3]=0;
+    //find mod
+    char mod[3];
+    strncpy(mod,bin_string+*bin_index+mod_index,2);
+    //find data
+    char data[5]={0,0,0,0,'\0'};
+    if (sub_str[w_index]=='1')
+    {
+        strncat(data,hex_string+*index+data_index,4);
+        char temp = data[0];
+        data[0] = data[2];
+        data[2] = temp;
+
+        temp = data[1];
+        data[1] = data[3];
+        data[3] = temp;
+    }
+    else strncat(data,hex_string+*index+data_index, 2);
+    
+    mod[2]=0;
+
+    reg=RegTable(regstr,sub_str[w_index]);
+    if (strcmp(mod,"11")==0)
+    {
+        rm=RegTable(rmstr,sub_str[w_index]);
+    }
+    else
+    {
+        //mod == "00"
+        rm=RMTable(rmstr);
+    }
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+    
+    if (sub_str[d_index]=='0')
+    {
+        //d==0
+        printf("%s%s%s%s%s\n",left, data, middle, reg, right);
+    }
+    else
+    {
+        //d==1
+        printf("%s%s%s%s%s\n",left, reg, middle,data, right);
+    }
+    
+    *index+=hex_length;
+    *bin_index+=hex_length*4;
+    return;
+
 }
