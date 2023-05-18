@@ -229,3 +229,80 @@ void ADD_Register(char* sub_str,int* index, int* bin_index,char* hex_string,char
         return;
     }
 }
+
+void XOR_Register(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string)
+{
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* reg;
+    char* rm;
+    //find reg
+    char regstr[4];
+    regstr[3]=0;
+    strncpy(regstr,bin_string+*bin_index+10,3);
+    //find rm
+    char rmstr[4];
+    strncpy(rmstr,bin_string+*bin_index+12,3);
+    rmstr[3]=0;
+    //find mod
+    char* mod[3];
+    strncpy(mod,bin_string+8,2);
+    mod[2]=0;
+    if (sub_str[7]=='1')
+    {
+        //w=1
+        reg=RegTable(regstr,1);
+        if (strcmp(mod,"11")==0)
+        {
+            rm=RegTable(rmstr,1);
+        }
+        else
+        {
+            //mod == "00"
+            rm=RMTable(rmstr);
+        }
+        strncpy(printstr,hex_string+*index,4);
+        printf("%s",printstr);
+        if (sub_str[6]=='0')
+        {
+            //d==0
+            printf("xor %s, %s\n", rm,reg);
+        }
+        else
+        {
+            //d==1
+            printf("xor %s, %s\n", reg,rm);
+        }
+        *index+=4;
+        *bin_index+=16;
+        return;
+    }
+    else
+    {
+        //w=0
+        reg=RegTable(regstr,0);
+        if (strcmp(mod,"11")==0)
+        {
+            rm=RegTable(rmstr,0);
+        }
+        else
+        {
+            //mod == "00"
+            rm=RMTable(rmstr);
+        }
+        strncpy(printstr,hex_string+*index,4);
+        printf("%s",printstr);
+        if (sub_str[6]=='0')
+        {
+            //d==0
+            printf("add [%s], %s\n", rm,reg);
+        }
+        else
+        {
+            //d==1
+            printf("add [%s], %s\n", reg,rm);
+        }
+        *index+=4;
+        *bin_index+=16;
+        return;
+    }
+}

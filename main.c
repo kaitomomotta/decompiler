@@ -57,6 +57,12 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
         
+        //XOR Reg Memory with register to either
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0')
+        {
+            XOR_Register(sub_str,&index,&bin_index,hex_string,bin_string);
+            continue;
+        }
         
         else
         {
