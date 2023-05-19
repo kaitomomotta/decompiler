@@ -101,6 +101,24 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+        //TEST Immediate Data and Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"test ",",","",2);
+            }
+            Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"test ",", ","",2);
+            continue;
+        }
+
+        //JNE Jump on Not Equal/Not Zero
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jne ","",2);
+            continue;
+        }
+
         else
         {
             printstr[0]=hex_string[index];
