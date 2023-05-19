@@ -81,7 +81,26 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,0,0,13,0,6,"lea ", ", ", "",disp);
             continue;
         }
+
+        //CMP Immediate with Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
+        {
+            if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"cmp ", ", ", "",0,4);
+            }
+            else Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"cmp ", ", ", "",0,4);
+
+            continue;
+        }
         
+        //JNB immediate to Register
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnb ","",2);
+            continue;
+        }
+
         else
         {
             printstr[0]=hex_string[index];
