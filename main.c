@@ -97,7 +97,7 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         //JNB immediate to Register
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnb ","",2);
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnb ","",2,2);
             continue;
         }
 
@@ -115,7 +115,175 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         //JNE Jump on Not Equal/Not Zero
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jne ","",2);
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jne ","",2,2);
+            continue;
+        }
+
+        //PUSH Register
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0')
+        {
+            Generic_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"push ","");
+            continue;
+        }
+
+        //CALL Direct Within Segment
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,6,"call ","",2,4);
+            continue;
+        }
+
+        //INT Type 3
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"int","");
+            continue;
+        }
+
+        //INTO
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"into","");
+            continue;
+        }
+
+        //IRET
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"iret","");
+            continue;
+        }
+
+        //CLC
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"clc","");
+            continue;
+        }
+
+        //CMC
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cmc","");
+            continue;
+        }
+
+        //STC
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"stc","");
+            continue;
+        }
+
+        //CLD
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cld","");
+            continue;
+        }
+
+        //STD
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"std","");
+            continue;
+        }
+
+        //CLI
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cli","");
+            continue;
+        }
+
+        //STI
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"sti","");
+            continue;
+        }
+
+        //HLT
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"hlt","");
+            continue;
+        }
+
+        //WAIT
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"wait","");
+            continue;
+        }
+
+        //LOCK
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"lock","");
+            continue;
+        }
+
+        //AAA
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"aaa","");
+            continue;
+        }
+
+        //BAA
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"baa","");
+            continue;
+        }
+
+        //AAS
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"aas","");
+            continue;
+        }
+
+        //AAS
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"das","");
+            continue;
+        }
+
+        //AAD
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1'&&bin_string[bin_index+8]=='0'&&bin_string[bin_index+9]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1'&&bin_string[bin_index+13]=='0'&&bin_string[bin_index+14]=='1'&&bin_string[bin_index+15]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,4,"aad","");
+            continue;
+        }
+
+        //CBW
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cbw","");
+            continue;
+        }
+
+        //CWD
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cwd","");
+            continue;
+        }
+
+        //RET Within Segment
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"ret","");
+            continue;
+        }
+
+        //RET Intersegment
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"ret","");
             continue;
         }
 

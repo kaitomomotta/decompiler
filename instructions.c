@@ -189,6 +189,9 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
     char mod[3];
     strncpy(mod,bin_string+*bin_index+mod_index,2);
     mod[2]=0;
+    //create data
+    char data[5];
+    memset(data,'\0', sizeof(data));
 
     reg=RegTable(regstr,sub_str[w_index]);
     if (strcmp(mod,"11")==0)
@@ -197,9 +200,30 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
     }
     else
     {
-        //mod == "00"
+        //mod != "11"
         rm=RMTable(rmstr);
     }
+    if (strcmp(mod,"00")==0&&strcmp(rmstr,"110")==0)
+    {
+        // EA = disp-high;disp-low
+        
+        if (bin_string[*bin_index+w_index]=='1')
+        {
+            data[0]=hex_string[*index+hex_length+2];
+            data[1]=hex_string[*index+hex_length+3];
+            data[2]=hex_string[*index+hex_length];
+            data[3]=hex_string[*index+hex_length+1];
+            hex_length+=4;
+        }
+        else
+        {
+            data[0]=hex_string[*index+hex_length];
+            data[1]=hex_string[*index+hex_length+1];
+            hex_length+=2;
+        }
+        rm=data;
+    }
+    
     strncpy(printstr,hex_string+*index,hex_length);
     printf("%s",printstr);
     if (strcmp(mod,"01")==0||strcmp(mod,"10")==0||strcmp(mod,"00")==0)
@@ -209,12 +233,14 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
             if (sub_str[d_index]=='0')
             {
                 //d==0
-                printf("%s[%s]%s%s%s\n",left, rm, middle, reg, right);
+                if (data[0]==0) printf("%s[%s]%s%s%s\n",left, rm, middle, reg, right);
+                else printf("%s[%s]%s%s%s\n",left, data, middle, reg, right);
             }
             else
             {
                 //d==1
-                printf("%s%s%s[%s]%s\n",left, reg, middle,rm, right);
+                if (data[0]==0) printf("%s%s%s[%s]%s\n",left, reg, middle,rm, right);
+                else printf("%s%s%s[%s]%s\n",left, reg, middle,data, right);
             }
         }
         else
@@ -222,12 +248,14 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
             if (sub_str[d_index]=='0')
             {
                 //d==0
-                printf("%s[%s+%i]%s%s%s\n",left, rm,disp, middle, reg, right);
+                if (data[0]==0) printf("%s[%s+%i]%s%s%s\n",left, rm,disp, middle, reg, right);
+                else printf("%s[%s+%i]%s%s%s\n",left, data,disp, middle, reg, right);
             }
             else
             {
                 //d==1
-                printf("%s%s%s[%s+%i]%s\n",left, reg, middle,rm,disp, right);
+                if (data[0]==0) printf("%s%s%s[%s+%i]%s\n",left, reg, middle,rm,disp, right);
+                else printf("%s%s%s[%s+%i]%s\n",left, reg, middle,data,disp, right);
             }
         }
     }
@@ -384,16 +412,35 @@ void add_hex_strings(char *hex1, char *hex2, char *result) {
     sprintf(result, "%04x", sum);
 }
 
+void swap_chars(char *arr) {
+    char temp;
+
+    temp = arr[0];
+    arr[0] = arr[2];
+    arr[2] = temp;
+
+    temp = arr[1];
+    arr[1] = arr[3];
+    arr[3] = temp;
+}
+
 void Generic_Process_JUMP(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
-    int hex_length,char* left, char* right, int data_index)
+    int hex_length,char* left, char* right, int data_index,int data_length)
 {
     char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
     //find data
-    char data1[3];
-    strncpy(data1,hex_string+*index+data_index,2);
-    data1[2]=0;
+    char data1[data_length+1];
+    strncpy(data1,hex_string+*index+data_index,data_length);
+    data1[data_length]=0;
+    
+    if (data_length==4)
+    {
+        swap_chars(data1);
+    }
 
     int num = ((*index-32*2)/2)+2;
+    if (data_length==4) num = ((*index-32*2)/2)+3;
+    
     char str[5];
     sprintf(str, "%04x", num);
     str[5]=0;
@@ -468,6 +515,42 @@ void Generic_Process_IMMEDIATE(char* sub_str,int* index, int* bin_index,char* he
     {
         printf("%s%s%s%s%s\n",left, rm, middle, data, right);
     }
+    
+    *index+=hex_length;
+    *bin_index+=hex_length*4;
+    return;
+
+}
+
+void Generic_Process_REGISTER(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int reg_index, int hex_length,
+    char* left, char* right)
+{
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* reg;
+    //find reg
+    char regstr[4];
+    regstr[3]=0;
+    strncpy(regstr,bin_string+*bin_index+reg_index,3);
+    reg=RegTable(regstr,'1');
+
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+    printf("%s%s%s\n",left, reg, right);
+    *index+=hex_length;
+    *bin_index+=hex_length*4;
+    return;
+}
+
+void Generic_Process_NOTHING(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int hex_length,char* left, char* right)
+{
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+
+    printf("%s%s\n",left,right);
     
     *index+=hex_length;
     *bin_index+=hex_length*4;
