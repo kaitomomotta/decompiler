@@ -119,6 +119,139 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+        //JE/JZ Jump on Equal/Zero
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"je ","",2,2);
+            continue;
+        }
+
+        //JL/JNGE Jump on Less/Not Greater or Equal
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jl ","",2,2);
+            continue;
+        }
+
+        //JLE/JNG Jump on Less or Equal/ Not Greater
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jle ","",2,2);
+            continue;
+        }
+
+        //JB/JNAE Jump on Below/Not Above or Equal
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jb ","",2,2);
+            continue;
+        }
+
+        //JBE/JNA Jump on Below or Equal/Not Above
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jbe ","",2,2);
+            continue;
+        }
+
+        //JP/JPE Jump on Parity/Parity Even
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jp ","",2,2);
+            continue;
+        }
+
+        //JO Jump on Overflow
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jo ","",2,2);
+            continue;
+        }
+
+        //JS Jump on Sign
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"js ","",2,2);
+            continue;
+        }
+
+        //JNL/JGE Jump on not less/greater or equal
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnl ","",2,2);
+            continue;
+        }
+
+        //JNLE/JG Jump on Not less or equal/greater
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnle ","",2,2);
+            continue;
+        }
+
+        //JNBE/JA Jump on Not below or equal/above
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnbe ","",2,2);
+            continue;
+        }
+
+        //JNP/JPO Jump on Not below or equal/above
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnp ","",2,2);
+            continue;
+        }
+
+        //JNO Jump on not overflow
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jno ","",2,2);
+            continue;
+        }
+
+        //JNS jump on not sign
+        if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jns ","",2,2);
+            continue;
+        }
+
+        //LOOP Loop CX times
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loop ","",2,2);
+            continue;
+        }
+
+        //LOOPZ/LOOPE loop while zero/equal
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loopz ","",2,2);
+            continue;
+        }
+
+        //LOOPNZ/LOOPNE loop while not zero/equal
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loopnz ","",2,2);
+            continue;
+        }
+
+        //JCXZ jump on CX zero
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jcxz ","",2,2);
+            continue;
+        }
+
+        //JMP Direct within segment-short
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jmp ","",2,2);
+            continue;
+        }
+
         //PUSH Register
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0')
         {
