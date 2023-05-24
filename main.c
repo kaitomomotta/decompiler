@@ -56,6 +56,48 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"add ", ", ","",0);
             continue;
         }
+
+        //ADC Reg Memory with register to either
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0')
+        {
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"adc ", ", ","",0);
+            continue;
+        }
+
+        //SUB Reg Memory with register to either
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0')
+        {
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"sub ", ", ","",0);
+            continue;
+        }
+
+        //SSB Reg Memory with register to either
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0')
+        {
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"ssb ", ", ","",0);
+            continue;
+        }
+
+        //CMP Reg Memory with register to either
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0')
+        {
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"cmp ", ", ","",0);
+            continue;
+        }
+
+        //AND Reg Memory with register to either
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0')
+        {
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"and ", ", ","",0);
+            continue;
+        }
+
+        //OR Reg Memory with register to either
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0')
+        {
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"or ", ", ","",0);
+            continue;
+        }
         
         //XOR Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0')
@@ -79,6 +121,54 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             sub[2]=0;
             int disp = (int)strtol(sub,NULL,16);
             Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,0,0,13,0,6,"lea ", ", ", "",disp);
+            continue;
+        }
+
+        //ADD Immediate to Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"add ", ", ", "",0,4);
+            }
+            else Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"add ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //ADC Immediate to Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
+        {
+            if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"adc ", ", ", "",0,4);
+            }
+            else Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"adc ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //SUB Immediate from Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
+        {
+            if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"sub ", ", ", "",0,4);
+            }
+            else Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"sub ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //SSB Immediate from Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
+        {
+            if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"ssb ", ", ", "",0,4);
+            }
+            else Generic_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"ssb ", ", ", "",0,4);
+
             continue;
         }
 
@@ -109,6 +199,50 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
                 Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"test ",",","",2);
             }
             Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"test ",", ","",2);
+            continue;
+        }
+
+        //AND Immediate Data and Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"and ",",","",2);
+            }
+            Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"and ",", ","",2);
+            continue;
+        }
+
+        //MOV Immediate Data and Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"mov ",",","",2);
+            }
+            Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"mov ",", ","",2);
+            continue;
+        }
+
+        //OR Immediate Data and Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"or ",",","",2);
+            }
+            Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"or ",", ","",2);
+            continue;
+        }
+
+        //OR Immediate Data and Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"xor ",",","",2);
+            }
+            Generic_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"xor ",", ","",2);
             continue;
         }
 
@@ -385,6 +519,13 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+        //AAM
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0'&&bin_string[bin_index+8]=='0'&&bin_string[bin_index+9]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1'&&bin_string[bin_index+13]=='0'&&bin_string[bin_index+14]=='1'&&bin_string[bin_index+15]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,4,"aam","");
+            continue;
+        }
+
         //AAD
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1'&&bin_string[bin_index+8]=='0'&&bin_string[bin_index+9]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1'&&bin_string[bin_index+13]=='0'&&bin_string[bin_index+14]=='1'&&bin_string[bin_index+15]=='0')
         {
@@ -417,6 +558,41 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
             Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"ret","");
+            continue;
+        }
+
+        //XLAT 
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"xlat","");
+            continue;
+        }
+
+        //LAHF 
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"lahf","");
+            continue;
+        }
+
+        //SAHF 
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"sahf","");
+            continue;
+        }
+
+        //PUSHF 
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"pushf","");
+            continue;
+        }
+
+        //POPF 
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"popf","");
             continue;
         }
 
