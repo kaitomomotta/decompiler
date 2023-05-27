@@ -379,13 +379,6 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
-        //JMP Direct within segment-short
-        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
-        {
-            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jmp ","",2,2);
-            continue;
-        }
-
         //PUSH Register
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0')
         {
@@ -421,6 +414,20 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+        //PUSH Segment Register
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
+        {
+            Generic_Process_Segment_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,3,2,"push ","");
+            continue;
+        }
+
+        //POP Segment Register
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
+        {
+            Generic_Process_Segment_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,3,2,"pop ","");
+            continue;
+        }
+
         //CALL Direct Within Segment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
@@ -428,17 +435,17 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
-        //JUMP Direct within segment
+        //JMP Direct within segment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
             Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,6,"jmp ","",2,4);
             continue;
         }
 
-        //JUMP Direct within segment-short
-        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        //JMP Direct within segment-short
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jmp ","",2,2);
+            Generic_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jmp short ","",2,2);
             continue;
         }
 

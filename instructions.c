@@ -77,6 +77,26 @@ char* RegTable(char* regstr,char w)
     }
 }
 
+char* RegTableSegment(char* regstr)
+{
+    if (strcmp(regstr,"00")==0)
+    {
+        return "es";
+    }
+    if (strcmp(regstr,"01")==0)
+    {
+        return "cs";
+    }
+    if (strcmp(regstr,"10")==0)
+    {
+        return "ss";
+    }
+    if (strcmp(regstr,"11")==0)
+    {
+        return "ds";
+    }
+}
+
 char* RMTable(char* rm)
 {
     if (strcmp(rm,"000")==0)
@@ -533,6 +553,26 @@ void Generic_Process_REGISTER(char* sub_str,int* index, int* bin_index,char* hex
     regstr[3]=0;
     strncpy(regstr,bin_string+*bin_index+reg_index,3);
     reg=RegTable(regstr,'1');
+
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+    printf("%s%s%s\n",left, reg, right);
+    *index+=hex_length;
+    *bin_index+=hex_length*4;
+    return;
+}
+
+void Generic_Process_Segment_REGISTER(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int reg_index, int hex_length,
+    char* left, char* right)
+{
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* reg;
+    //find reg
+    char regstr[3];
+    regstr[2]=0;
+    strncpy(regstr,bin_string+*bin_index+reg_index,2);
+    reg=RegTableSegment(regstr);
 
     strncpy(printstr,hex_string+*index,hex_length);
     printf("%s",printstr);
