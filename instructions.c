@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+void modifyString(char* str) {
+    int i;
+    for (i = 0; i < 4; i++) {
+        str[i] = str[i + 1];
+    }
+    str[4] = '\0';
+}
+
 void adjustHexString(char* hex)
 {
     unsigned int value = strtol(hex, NULL, 16);
@@ -860,6 +868,8 @@ void Generic_Process_JUMP(char* sub_str,int* index, int* bin_index,char* hex_str
     data[5]=0;
 
     if(data_length==2) adjustHexString(data);
+
+    if(data[4]!='\0') modifyString(data);
 
     strncpy(printstr,hex_string+*index,hex_length);
     printf("%s",printstr);
