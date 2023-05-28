@@ -354,6 +354,126 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
 
 }
 
+void Generic_Process_VW(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int mod_index, int v_index,int w_index,int rm_index, int hex_length,
+    char* left, char* middle, char* right,int disp)
+{
+    *bin_index=*index*4;
+    
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* rm;
+    //find rm
+    char rmstr[4];
+    strncpy(rmstr,bin_string+*bin_index+rm_index,3);
+    rmstr[3]=0;
+    //find mod
+    char mod[3];
+    strncpy(mod,bin_string+*bin_index+mod_index,2);
+    mod[2]=0;
+    //create data
+    char data[5];
+    memset(data,'\0', sizeof(data));
+
+    rm=RMTable(rmstr);
+
+    char* dispstr[6]={'+','\0','\0','\0','\0','\0'};
+    //find disp
+    if (strcmp(mod,"01")==0)
+    {
+        //disp = disp-low sign-extended to 16 bits
+        strncat(dispstr,hex_string+*index+4,2);
+        convertHexToSignedHex(dispstr);
+        //strcat(dispstr,'\0');
+        hex_length+=2;
+    }
+    else if (strcmp(mod,"10")==0)
+    {
+        //disp = disp-high;disp-low
+        strncat(dispstr,hex_string+*index+6,2);
+        //strcat(dispstr,'\0');
+        strncat(dispstr,hex_string+*index+4,2);
+        //strcat(dispstr,'\0');
+        hex_length+=4;
+    }
+    
+
+    if (strcmp(mod,"00")==0&&strcmp(rmstr,"110")==0)
+    {
+        // EA = disp-high;disp-low
+        
+        if (bin_string[*bin_index+w_index]=='1')
+        {
+            data[0]=hex_string[*index+hex_length+2];
+            data[1]=hex_string[*index+hex_length+3];
+            data[2]=hex_string[*index+hex_length];
+            data[3]=hex_string[*index+hex_length+1];
+            hex_length+=4;
+        }
+        else
+        {
+            data[0]=hex_string[*index+hex_length];
+            data[1]=hex_string[*index+hex_length+1];
+            hex_length+=2;
+        }
+        rm=data;
+    }
+    
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+    if (strcmp(mod,"01")==0||strcmp(mod,"10")==0||strcmp(mod,"00")==0)
+    {
+        if (strcmp(dispstr,"+")==0)
+        {
+            if (sub_str[v_index]=='0')
+            {
+                //v==0
+                if (data[0]==0) printf("%s[%s]%s%s%s\n",left, rm, middle, "1", right);
+                else printf("%s[%s]%s%s%s\n",left, data, middle, "1", right);
+            }
+            else
+            {
+                //v==1
+                if (data[0]==0) printf("%s%s%s[%s]%s\n",left, "cl", middle,rm, right);
+                else printf("%s%s%s[%s]%s\n",left, "cl", middle,data, right);
+            }
+        }
+        else
+        {
+            if (sub_str[v_index]=='0')
+            {
+                //v==0
+                if (data[0]==0) printf("%s[%s%s]%s%s%s\n",left, rm,dispstr, middle, "1", right);
+                else printf("%s[%s%s]%s%s%s\n",left, data,dispstr, middle, "1", right);
+            }
+            else
+            {
+                //v==1
+                if (data[0]==0) printf("%s%s%s[%s%s]%s\n",left, "cl", middle,rm,dispstr, right);
+                else printf("%s%s%s[%s%s]%s\n",left, "cl", middle,data,dispstr, right);
+            }
+        }
+    }
+    else
+    {
+        if (sub_str[v_index]=='0')
+        {
+            //v==0
+            printf("%s%s%s%s%s\n",left, rm, middle, "1", right);
+        }
+        else
+        {
+            //v==1
+            printf("%s%s%s%s%s\n",left, "cl", middle,rm, right);
+        }
+    }
+    
+    *index+=hex_length;
+    *bin_index+=hex_length*4;
+    return;
+
+}
+
+
 void Generic_Process_One(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
     int mod_index,int reg_index, int d_index,int w_index,int rm_index,int s_index, int hex_length,
     char* left, char* middle, char* right, int data_index)

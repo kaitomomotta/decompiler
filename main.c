@@ -113,6 +113,55 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+        //SHL/SAL Shift Logical/Arithmetic Left
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"shl ", ", ", "",0);
+            continue;
+        }
+
+        //SHR shift logical right
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"shr ", ", ", "",0);
+            continue;
+        }
+
+        //SAR shift arithmetic right
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"sar ", ", ", "",0);
+            continue;
+        }
+
+        //ROL rotate left
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rol ", ", ", "",0);
+            continue;
+        }
+
+        //ROR rotate right
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"ror ", ", ", "",0);
+            continue;
+        }
+
+        //RCL rotate through carry flag left
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rcl ", ", ", "",0);
+            continue;
+        }
+
+        //RCL rotate through carry right
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rcr ", ", ", "",0);
+            continue;
+        }
+
         //LEA  Load EA to Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
