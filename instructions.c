@@ -2,6 +2,40 @@
 #include <stdlib.h>
 #include <string.h>
 
+void adjustHexString(char* hex)
+{
+    unsigned int value = strtol(hex, NULL, 16);
+
+    if (value > 0x127)
+    {
+        value -= 0x100;
+        sprintf(hex, "%04x", value);
+    }
+}
+
+void convertHexToSignedHex(char* hex)
+{
+    // Convert the hexadecimal string to an unsigned long integer
+    unsigned long value = strtoul(hex + 1, NULL, 16); // Skip the '+' character
+
+    // If the most significant bit (bit 7) is set, interpret the value as negative
+    if (value & 0x80)
+    {
+        // Perform two's complement conversion
+        value = (~value + 1) & 0xFF;
+        
+        // Modify the first character in the string to '-'
+        hex[0] = '-';
+        // Store the resulting signed value back in the string starting from the second character
+        sprintf(hex + 1, "%02lx", value);
+    }
+    else
+    {
+        // Keep the '+' character
+        // Store the resulting signed value back in the string starting from the second character
+        sprintf(hex + 1, "%02lx", value);
+    }
+}
 
 char* RegTable(char* regstr,char w)
 {
@@ -212,7 +246,6 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
     //create data
     char data[5];
     memset(data,'\0', sizeof(data));
-
     reg=RegTable(regstr,sub_str[w_index]);
     if (strcmp(mod,"11")==0)
     {
@@ -223,6 +256,28 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
         //mod != "11"
         rm=RMTable(rmstr);
     }
+
+    char* dispstr[6]={'+','\0','\0','\0','\0','\0'};
+    //find disp
+    if (strcmp(mod,"01")==0)
+    {
+        //disp = disp-low sign-extended to 16 bits
+        strncat(dispstr,hex_string+*index+4,2);
+        convertHexToSignedHex(dispstr);
+        //strcat(dispstr,'\0');
+        hex_length+=2;
+    }
+    else if (strcmp(mod,"10")==0)
+    {
+        //disp = disp-high;disp-low
+        strncat(dispstr,hex_string+*index+6,2);
+        //strcat(dispstr,'\0');
+        strncat(dispstr,hex_string+*index+4,2);
+        //strcat(dispstr,'\0');
+        hex_length+=4;
+    }
+    
+
     if (strcmp(mod,"00")==0&&strcmp(rmstr,"110")==0)
     {
         // EA = disp-high;disp-low
@@ -248,7 +303,7 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
     printf("%s",printstr);
     if (strcmp(mod,"01")==0||strcmp(mod,"10")==0||strcmp(mod,"00")==0)
     {
-        if (disp==0)
+        if (strcmp(dispstr,"+")==0)
         {
             if (sub_str[d_index]=='0')
             {
@@ -268,14 +323,14 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
             if (sub_str[d_index]=='0')
             {
                 //d==0
-                if (data[0]==0) printf("%s[%s+%i]%s%s%s\n",left, rm,disp, middle, reg, right);
-                else printf("%s[%s+%i]%s%s%s\n",left, data,disp, middle, reg, right);
+                if (data[0]==0) printf("%s[%s%s]%s%s%s\n",left, rm,dispstr, middle, reg, right);
+                else printf("%s[%s%s]%s%s%s\n",left, data,dispstr, middle, reg, right);
             }
             else
             {
                 //d==1
-                if (data[0]==0) printf("%s%s%s[%s+%i]%s\n",left, reg, middle,rm,disp, right);
-                else printf("%s%s%s[%s+%i]%s\n",left, reg, middle,data,disp, right);
+                if (data[0]==0) printf("%s%s%s[%s%s]%s\n",left, reg, middle,rm,dispstr, right);
+                else printf("%s%s%s[%s%s]%s\n",left, reg, middle,data,dispstr, right);
             }
         }
     }
@@ -468,6 +523,8 @@ void Generic_Process_JUMP(char* sub_str,int* index, int* bin_index,char* hex_str
     char data[5];
     add_hex_strings(data1,str,data);
     data[5]=0;
+
+    adjustHexString(data);
 
     strncpy(printstr,hex_string+*index,hex_length);
     printf("%s",printstr);

@@ -120,7 +120,7 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             strncpy(sub,hex_string+index+4,2);
             sub[2]=0;
             int disp = (int)strtol(sub,NULL,16);
-            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,0,0,13,0,6,"lea ", ", ", "",disp);
+            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,0,0,13,0,4,"lea ", ", ", "",0);
             continue;
         }
 
