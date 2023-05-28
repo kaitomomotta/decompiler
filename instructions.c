@@ -354,6 +354,221 @@ void Generic_Process(char* sub_str,int* index, int* bin_index,char* hex_string,c
 
 }
 
+void Generic_Process_NODW(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int mod_index,int reg_index,int rm_index, int hex_length,
+    char* left, char* middle, char* right,int disp)
+{
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* reg;
+    char* rm;
+    //find reg
+    char regstr[4];
+    regstr[3]=0;
+    strncpy(regstr,bin_string+*bin_index+reg_index,3);
+    //find rm
+    char rmstr[4];
+    strncpy(rmstr,bin_string+*bin_index+rm_index,3);
+    rmstr[3]=0;
+    //find mod
+    char mod[3];
+    strncpy(mod,bin_string+*bin_index+mod_index,2);
+    mod[2]=0;
+    //create data
+    char data[5];
+    memset(data,'\0', sizeof(data));
+    reg=RegTable(regstr,'1');
+    if (strcmp(mod,"11")==0)
+    {
+        rm=RegTable(rmstr,'1');
+    }
+    else
+    {
+        //mod != "11"
+        rm=RMTable(rmstr);
+    }
+
+    char* dispstr[6]={'+','\0','\0','\0','\0','\0'};
+    //find disp
+    if (strcmp(mod,"01")==0)
+    {
+        //disp = disp-low sign-extended to 16 bits
+        strncat(dispstr,hex_string+*index+4,2);
+        convertHexToSignedHex(dispstr);
+        //strcat(dispstr,'\0');
+        hex_length+=2;
+    }
+    else if (strcmp(mod,"10")==0)
+    {
+        //disp = disp-high;disp-low
+        strncat(dispstr,hex_string+*index+6,2);
+        //strcat(dispstr,'\0');
+        strncat(dispstr,hex_string+*index+4,2);
+        //strcat(dispstr,'\0');
+        hex_length+=4;
+    }
+    
+
+    if (strcmp(mod,"00")==0&&strcmp(rmstr,"110")==0)
+    {
+        // EA = disp-high;disp-low
+
+        data[0]=hex_string[*index+hex_length+2];
+        data[1]=hex_string[*index+hex_length+3];
+        data[2]=hex_string[*index+hex_length];
+        data[3]=hex_string[*index+hex_length+1];
+        hex_length+=4;
+        rm=data;
+    }
+    
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+    if (strcmp(mod,"01")==0||strcmp(mod,"10")==0||strcmp(mod,"00")==0)
+    {
+        if (strcmp(dispstr,"+")==0)
+        {
+            if (data[0]==0) printf("%s%s%s[%s]%s\n",left, reg, middle,rm, right);
+            else printf("%s%s%s[%s]%s\n",left, reg, middle,data, right);
+        }
+        else
+        {
+            if (data[0]==0) printf("%s%s%s[%s%s]%s\n",left, reg, middle,rm,dispstr, right);
+            else printf("%s%s%s[%s%s]%s\n",left, reg, middle,data,dispstr, right);
+        }
+    }
+    else
+    {
+        printf("%s%s%s%s%s\n",left, rm, middle, reg, right);
+    }
+    
+    *index+=hex_length;
+    *bin_index+=hex_length*4;
+    return;
+
+}
+
+void Generic_Process_NODW_Segment(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int mod_index,int reg_index,int rm_index, int hex_length,
+    char* left, char* middle, char* right,int disp,int pos) //pos = 0 --> reg rm, pos = 1 --> rm reg
+{
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* reg;
+    char* rm;
+    //find reg
+    char regstr[3];
+    regstr[2]=0;
+    strncpy(regstr,bin_string+*bin_index+reg_index,2);
+    //find rm
+    char rmstr[4];
+    strncpy(rmstr,bin_string+*bin_index+rm_index,3);
+    rmstr[3]=0;
+    //find mod
+    char mod[3];
+    strncpy(mod,bin_string+*bin_index+mod_index,2);
+    mod[2]=0;
+    //create data
+    char data[5];
+    memset(data,'\0', sizeof(data));
+    reg=RegTableSegment(regstr);
+    if (strcmp(mod,"11")==0)
+    {
+        rm=RegTableSegment(rmstr);
+        rm[2]=0;
+    }
+    else
+    {
+        //mod != "11"
+        rm=RMTable(rmstr);
+    }
+
+    char* dispstr[6]={'+','\0','\0','\0','\0','\0'};
+    //find disp
+    if (strcmp(mod,"01")==0)
+    {
+        //disp = disp-low sign-extended to 16 bits
+        strncat(dispstr,hex_string+*index+4,2);
+        convertHexToSignedHex(dispstr);
+        //strcat(dispstr,'\0');
+        hex_length+=2;
+    }
+    else if (strcmp(mod,"10")==0)
+    {
+        //disp = disp-high;disp-low
+        strncat(dispstr,hex_string+*index+6,2);
+        //strcat(dispstr,'\0');
+        strncat(dispstr,hex_string+*index+4,2);
+        //strcat(dispstr,'\0');
+        hex_length+=4;
+    }
+    
+
+    if (strcmp(mod,"00")==0&&strcmp(rmstr,"110")==0)
+    {
+        // EA = disp-high;disp-low
+
+        data[0]=hex_string[*index+hex_length+2];
+        data[1]=hex_string[*index+hex_length+3];
+        data[2]=hex_string[*index+hex_length];
+        data[3]=hex_string[*index+hex_length+1];
+        hex_length+=4;
+        rm=data;
+    }
+    
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+    if (strcmp(mod,"01")==0||strcmp(mod,"10")==0||strcmp(mod,"00")==0)
+        {
+            if (strcmp(dispstr,"+")==0)
+            {
+                if (pos==0)
+                {
+                    //d==0
+                    if (data[0]==0) printf("%s[%s]%s%s%s\n",left, rm, middle, reg, right);
+                    else printf("%s[%s]%s%s%s\n",left, data, middle, reg, right);
+                }
+                else
+                {
+                    //d==1
+                    if (data[0]==0) printf("%s%s%s[%s]%s\n",left, reg, middle,rm, right);
+                    else printf("%s%s%s[%s]%s\n",left, reg, middle,data, right);
+                }
+            }
+            else
+            {
+                if (pos==0)
+                {
+                    //d==0
+                    if (data[0]==0) printf("%s[%s%s]%s%s%s\n",left, rm,dispstr, middle, reg, right);
+                    else printf("%s[%s%s]%s%s%s\n",left, data,dispstr, middle, reg, right);
+                }
+                else
+                {
+                    //d==1
+                    if (data[0]==0) printf("%s%s%s[%s%s]%s\n",left, reg, middle,rm,dispstr, right);
+                    else printf("%s%s%s[%s%s]%s\n",left, reg, middle,data,dispstr, right);
+                }
+            }
+        }
+        else
+        {
+            if (pos==0)
+            {
+                //d==0
+                printf("%s%s%s%s%s\n",left, rm, middle, reg, right);
+            }
+            else
+            {
+                //d==1
+                printf("%s%s%s%s%s\n",left, reg, middle,rm, right);
+            }
+        }
+        
+        *index+=hex_length;
+        *bin_index+=hex_length*4;
+        return;
+
+}
+
+
 void Generic_Process_VW(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
     int mod_index, int v_index,int w_index,int rm_index, int hex_length,
     char* left, char* middle, char* right,int disp)

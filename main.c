@@ -50,6 +50,20 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+        //MOV Register/Memory to Segment Register
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0'&&bin_string[bin_index+10]=='0')
+        {
+            Generic_Process_NODW_Segment(sub_str,&index,&bin_index,hex_string,bin_string,8,11,13,4,"mov ", ", ","",0,0);
+            continue;
+        }
+
+        //MOV Register/Memory to Segment Register
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0'&&bin_string[bin_index+10]=='0')
+        {
+            Generic_Process_NODW_Segment(sub_str,&index,&bin_index,hex_string,bin_string,8,11,13,4,"mov ", ", ","",0,1);
+            continue;
+        }
+
         //ADD Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0')
         {
@@ -165,11 +179,21 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         //LEA  Load EA to Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            char sub[3];
-            strncpy(sub,hex_string+index+4,2);
-            sub[2]=0;
-            int disp = (int)strtol(sub,NULL,16);
-            Generic_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,0,0,13,0,4,"lea ", ", ", "",0);
+            Generic_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"lea ", ", ","",0);
+            continue;
+        }
+
+        //LDS load pointer to DS
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        {
+            Generic_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"lds ", ", ","",0);
+            continue;
+        }
+
+        //LES load pointer to ES
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        {
+            Generic_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"les ", ", ","",0);
             continue;
         }
 
