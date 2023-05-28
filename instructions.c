@@ -524,7 +524,7 @@ void Generic_Process_JUMP(char* sub_str,int* index, int* bin_index,char* hex_str
     add_hex_strings(data1,str,data);
     data[5]=0;
 
-    adjustHexString(data);
+    if(data_length==2) adjustHexString(data);
 
     strncpy(printstr,hex_string+*index,hex_length);
     printf("%s",printstr);
