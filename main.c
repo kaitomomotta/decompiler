@@ -50,6 +50,34 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+        //IN Fixed port
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            Generic_Fixed_Port(sub_str,&index,&bin_index,hex_string,"in ");
+            continue;
+        }
+
+        //OUT Fixed port
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1')
+        {
+            Generic_Fixed_Port(sub_str,&index,&bin_index,hex_string,"out ");
+            continue;
+        }
+
+        //IN variable port
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            Generic_Fixed_PortVAR(sub_str,&index,&bin_index,hex_string,"in ");
+            continue;
+        }
+
+        //OUT variable port
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1')
+        {
+            Generic_Fixed_PortVAR(sub_str,&index,&bin_index,hex_string,"out ");
+            continue;
+        }
+
         //MOV Register/Memory to Segment Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0'&&bin_string[bin_index+10]=='0')
         {
@@ -194,6 +222,104 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
             Generic_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"les ", ", ","",0);
+            continue;
+        }
+
+        //CALL Indirect within segment
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"call ","",0);
+            continue;
+        }
+
+        //PUsh Register/Memory
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"push ","",0);
+            continue;
+        }
+
+        //Neg change sign
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"neg ","",0);
+            continue;
+        }
+
+        //DEC register/memory
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"dec ","",0);
+            continue;
+        }
+
+        //INC register/memory
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"inc ","",0);
+            continue;
+        }
+
+        //MUL multiply (unsigned)
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"mul ","",0);
+            continue;
+        }
+
+        //IMUL integer multiply (signed)
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"imul ","",0);
+            continue;
+        }
+
+        //DIV divide (unsigned)
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"div ","",0);
+            continue;
+        }
+
+        //IDIV integer divide (signed)
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"idiv ","",0);
+            continue;
+        }
+
+        //NOT invert
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"not ","",0);
+            continue;
+        }
+
+        //POP register/memory
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"pop ","",0);
+            continue;
+        }
+
+        //CALL indirect intersegment
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"call ","",0);
+            continue;
+        }
+
+        //JMP indirect within segment
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
+        {
+            Generic_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"jmp ","",0);
+            continue;
+        }
+
+        //JMP indirect within segment
+        if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
+        {
+            Generic_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"jmp ","",0);
             continue;
         }
 
