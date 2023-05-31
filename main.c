@@ -782,7 +782,7 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         }
 
         //CBW
-        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
             Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cbw","");
             continue;
