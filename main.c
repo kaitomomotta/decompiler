@@ -3,6 +3,58 @@
 #include <string.h>
 #include "instructions.c"
 
+// Convert a single hexadecimal character to its binary representation
+char* hexCharToBin(char c)
+{
+    switch (c)
+    {
+        case '0': return "0000";
+        case '1': return "0001";
+        case '2': return "0010";
+        case '3': return "0011";
+        case '4': return "0100";
+        case '5': return "0101";
+        case '6': return "0110";
+        case '7': return "0111";
+        case '8': return "1000";
+        case '9': return "1001";
+        case 'a':
+        case 'A': return "1010";
+        case 'b':
+        case 'B': return "1011";
+        case 'c':
+        case 'C': return "1100";
+        case 'd':
+        case 'D': return "1101";
+        case 'e':
+        case 'E': return "1110";
+        case 'f':
+        case 'F': return "1111";
+        default: return ""; // Invalid character
+    }
+}
+
+
+// Convert a hexadecimal string to its binary representation
+void hexToBin(const char* hexStr, char* binStr)
+{
+    size_t hexLen = strlen(hexStr);
+    size_t binIndex = 0;
+    for (size_t i = 0; i < hexLen; i++)
+    {
+        char* bin = hexCharToBin(hexStr[i]);
+        if (strlen(bin) == 0)
+        {
+            // Invalid character, return empty string
+            binStr[0] = '\0';
+            return;
+        }
+        size_t binLen = strlen(bin);
+        strncpy(binStr + binIndex, bin, binLen);
+        binIndex += binLen;
+    }
+    binStr[binIndex] = '\0';
+}
 
 char* hexadd(int number){
     char str[]={'0','0','0','0','\0'};
@@ -15,18 +67,31 @@ char* hexxx(int number) {
     char str[5];
     sprintf(str, "%04x", num);
     printf("%s: ", str);
-    return 0;
+    return str;
 }
 
 //the function that does everything
-int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
+int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer,char* buffer, char* filename){
     unsigned int end_index = 32*2 + lenght_of_buffer*2;
     unsigned int index = 32*2;
     unsigned int bin_index=32*2*4;
+    unsigned int real_index=0;
     char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
     while (index<end_index)
     {
-        hexxx((index-32*2)/2);
+        memset(hex_string,0,sizeof(hex_string));
+        for (int i = index; i < 16+index; i++) {
+        // Add the hex byte to the hex string
+            sprintf(hex_string + strlen(hex_string), "%02x", (unsigned char)buffer[i]);
+            hex_string[16]=0;
+        }
+
+        memset(bin_string,0,sizeof(bin_string));
+        hexToBin(hex_string,bin_string);
+
+        char* hexxxval;
+        hexxxval = hexxx((index-32*2)/2);
+
         for (size_t i = 0; i < 14; i++)
         {
             printstr[i]=' ';
@@ -359,6 +424,114 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+        //SUB Immediate to accumulator
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"sub ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"sub ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //ADD Immediate to accumulator
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"add ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"add ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //ADC Immediate to accumulator
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"adc ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"adc ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //SSB Immediate to accumulator
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"ssb ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"ssb ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //CMB Immediate to accumulator
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"cmp ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"cmp ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //AND Immediate to accumulator
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"and ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"and ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //TEST Immediate to accumulator
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"test ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"test ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //OR Immediate to accumulator
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"or ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"or ", ", ", "",0,4);
+
+            continue;
+        }
+
+        //XOR Immediate to accumulator
+        if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0')
+        {
+            if (bin_string[bin_index+7]=='1')
+            {
+                Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"xor ", ", ", "",0,4);
+            }
+            else Generic_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"xor ", ", ", "",0,4);
+
+            continue;
+        }
+
         //SSB Immediate from Register/Memory
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
         {
@@ -648,6 +821,7 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             continue;
         }
 
+
         //INT Type 3
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
@@ -789,7 +963,7 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
         }
 
         //CWD
-        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
+        if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
             Generic_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cwd","");
             continue;
@@ -852,74 +1026,29 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer){
             printf("(undefined)\n");
             index+=2;
             bin_index+=8;
-            continue;
+            return;
         }
         
     }
     printf("\n");
 }
 
-// Convert a single hexadecimal character to its binary representation
-char* hexCharToBin(char c)
-{
-    switch (c)
-    {
-        case '0': return "0000";
-        case '1': return "0001";
-        case '2': return "0010";
-        case '3': return "0011";
-        case '4': return "0100";
-        case '5': return "0101";
-        case '6': return "0110";
-        case '7': return "0111";
-        case '8': return "1000";
-        case '9': return "1001";
-        case 'a':
-        case 'A': return "1010";
-        case 'b':
-        case 'B': return "1011";
-        case 'c':
-        case 'C': return "1100";
-        case 'd':
-        case 'D': return "1101";
-        case 'e':
-        case 'E': return "1110";
-        case 'f':
-        case 'F': return "1111";
-        default: return ""; // Invalid character
-    }
-}
-
-// Convert a hexadecimal string to its binary representation
-void hexToBin(const char* hexStr, char* binStr)
-{
-    size_t hexLen = strlen(hexStr);
-    size_t binIndex = 0;
-    for (size_t i = 0; i < hexLen; i++)
-    {
-        char* bin = hexCharToBin(hexStr[i]);
-        if (strlen(bin) == 0)
-        {
-            // Invalid character, return empty string
-            binStr[0] = '\0';
-            return;
-        }
-        size_t binLen = strlen(bin);
-        strncpy(binStr + binIndex, bin, binLen);
-        binIndex += binLen;
-    }
-    binStr[binIndex] = '\0';
-}
-
-int main() {
+int main(int argc,char *argv[]) {
     FILE *file;
     char *buffer;
     long file_length;
     char hex_string[1025] = ""; // Initialize an empty string
     char bin_string[4097]={0};
 
+    if (argc!=2)
+    {
+        printf("usage : ./main nameoffile");
+        return;
+    }
+    
+
     // Open the file
-    file = fopen("a.out", "rb");
+    file = fopen(argv[1], "rb");
     if (!file) {
         printf("Error: file not found\n");
         return 1;
@@ -953,10 +1082,10 @@ int main() {
     //printf("int lenght_of_buffer: %u\n",lenght_of_buffer);
 
     // Add the hex and binary bytes to their respective strings
-    for (int i = 0; i < 32*2+lenght_of_buffer; i++) {
+    for (int i = 0; i < 1024; i++) {
         // Add the hex byte to the hex string
         sprintf(hex_string + strlen(hex_string), "%02x", (unsigned char)buffer[i]);
-
+        hex_string[1024]=0;
     }
     hexToBin(hex_string,bin_string);
     // Display the hex and binary strings
@@ -965,7 +1094,7 @@ int main() {
 
 
 
-    process(hex_string,bin_string,lenght_of_buffer);
+    process(hex_string,bin_string,lenght_of_buffer,buffer,argv[1]);
 
     // Display the hex string
     //printf("full buffer: %s\n", hex_string);

@@ -991,6 +991,11 @@ void Generic_Process_NOREG_S(char* sub_str,int* index, int* bin_index,char* hex_
     }
     char data[5];
     memset(data,'\0', sizeof(data));
+    if (bin_string[*bin_index+s_index]=='1'&&bin_string[*bin_index+7]=='1')
+    {
+        hex_length+=4;
+    }
+    
     if (bin_string[*bin_index+s_index]=='0'&&bin_string[*bin_index+7]=='1')
     {
         data[0]=hex_string[*index+data_index+2];
@@ -1026,6 +1031,43 @@ void Generic_Process_NOREG_S(char* sub_str,int* index, int* bin_index,char* hex_
     return;
 
 }
+
+void Generic_Process_ACCU(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+    int w_index, int hex_length,
+    char* left, char* middle, char* right,int disp, int data_index)
+{
+    char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char data[5];
+    memset(data,'\0', sizeof(data));
+    if (bin_string[*bin_index+7]=='1')
+    {
+        data[0]=hex_string[*index+data_index+2];
+        data[1]=hex_string[*index+data_index+3];
+        data[2]=hex_string[*index+data_index];
+        data[3]=hex_string[*index+data_index+1];
+    }
+    else
+    {
+        data[0]=hex_string[*index+data_index];
+        data[1]=hex_string[*index+data_index+1];
+    }
+    strncpy(printstr,hex_string+*index,hex_length);
+    printf("%s",printstr);
+    if (bin_string[*bin_index+7]=='1')
+    {
+        printf("%s%s%s%s%s\n",left, "ax", middle, data, right);
+    }
+    else
+    {
+        printf("%s%s%s%s%s\n",left, "al", middle, data, right);
+    }
+    
+    *index+=hex_length;
+    *bin_index+=hex_length*4;
+    return;
+
+}
+
 
 void add_hex_strings(char *hex1, char *hex2, char *result) {
     int num1 = (int)strtol(hex1, NULL, 16);

@@ -1,0 +1,24 @@
+To build code: type "make" in terminal.
+To build again : type "make clean" then "make" again.
+Usage : "./main name_of_executable.out"
+
+Screenshots of my code running on my machine can be found in "./screenshots/".
+
+Implementation: I open the executable and put it progressively into two strings, 
+named hex_string and bin_string. Then, i go progressively, analysing certain
+characters of bin_string. If I recognize a certain opcode, I then enter a
+function where the appropriate instruction is then printed. These functions
+are located in the "instructions.c" file. At the end of each of these functions, 
+the index values are incremented by the amount corresponding to the instruction
+that was just identified. Rince and repeat until we arrive to the theorical stop
+of the program.
+
+
+Known issues : 
+    1. for 3.c and 4.c the parser stops too early and segfaults : 
+    to prevent that, I have built a failsafe where it instead puts an (undefined)
+    and stops the program.
+    2. for 5.c nothing prints.
+    3. for 6.c the parser works all the way, just stops a few instructions too late.
+These issues could most likely be solved by rewriting the code that determines how many addresses
+to parse through : something I intend to solve ASAP for the interpreter.
