@@ -216,18 +216,20 @@ void InterMOV_Immediate_Register(char* sub_str,int* index, int* bin_index,char* 
     }
 }
 
-void InterINT_Specified(char* sub_str,int* index, int* bin_index,char* hex_string)
+char* InterINT_Specified(char* sub_str,int* index, int* bin_index,char* hex_string)
 {
     char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* message = malloc(100 * sizeof(char));
     char* reg;
     char regstr[4];
     //strncpy(regstr,sub_str+5,3);
     //reg=InterRegTable(regstr,1);
     strncpy(printstr,hex_string+*index,4);
     printf("%s",printstr);
-    printf("int %c%c\n",hex_string[*index+2],hex_string[*index+3]);
+    sprintf(message,"int %c%c\n",hex_string[*index+2],hex_string[*index+3]);
     *index+=4;
     *bin_index+=16;
+    return message;
 }
 
 void InterGeneric_Fixed_Port(char* sub_str,int* index, int* bin_index,char* hex_string, char* left)
@@ -901,11 +903,12 @@ void InterGeneric_Process_VW(char* sub_str,int* index, int* bin_index,char* hex_
 }
 
 
-void InterGeneric_Process_One(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+char* InterGeneric_Process_One(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
     int mod_index,int reg_index, int d_index,int w_index,int rm_index,int s_index, int hex_length,
     char* left, char* middle, char* right, int data_index)
 {
     char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* message = malloc(100 * sizeof(char));
     char* reg;
     char* rm;
     //find reg
@@ -952,17 +955,17 @@ void InterGeneric_Process_One(char* sub_str,int* index, int* bin_index,char* hex
     if (sub_str[d_index]=='0')
     {
         //d==0
-        printf("%s%s%s%s%s\n",left, data, middle, reg, right);
+        sprintf(message,"%s%s%s%s%s\n",left, data, middle, reg, right);
     }
     else
     {
         //d==1
-        printf("%s%s%s%s%s\n",left, reg, middle,data, right);
+        sprintf(message,"%s%s%s%s%s\n",left, reg, middle,data, right);
     }
     
     *index+=hex_length;
     *bin_index+=hex_length*4;
-    return;
+    return message;
 
 }
 

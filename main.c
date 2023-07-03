@@ -1093,17 +1093,22 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         char sub_str[9];
         strncpy(sub_str, bin_string + bin_index, 8);
         sub_str[8] = '\0';
+
         //MOV immediate to Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1')
         {
-            InterGeneric_Process_One(sub_str,&index,&bin_index,hex_string,bin_string,0,5,0,4,0,0,6,"mov ",", ","",2);
+            char* message = InterGeneric_Process_One(sub_str,&index,&bin_index,hex_string,bin_string,0,5,0,4,0,0,6,"mov ",", ","",2);
+            printf("%s",message);
+            free(message);
             continue;
         }
         
         //INT Specified
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterINT_Specified(sub_str,&index,&bin_index,hex_string);
+            char* message = InterINT_Specified(sub_str,&index,&bin_index,hex_string);
+            printf("%s",message);
+            free(message);
             continue;
         }
 
