@@ -1042,6 +1042,44 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer,cha
     printf("\n");
 }
 
+void PushRegister(short chars, const char* regName, short* AX, short* BX, short* CX, short* DX, short* SP, short* BP, short* SI, short* DI)
+{
+    chars= chars%65535;
+    if (strcmp(regName, "ax") == 0)
+    {
+        *AX = chars;
+    }
+    if (strcmp(regName, "bx") == 0)
+    {
+        *BX = chars;
+    }
+    if (strcmp(regName, "cx") == 0)
+    {
+        *CX = chars;
+    }
+    if (strcmp(regName, "dx") == 0)
+    {
+        *DX = chars;
+    }
+    if (strcmp(regName, "sp") == 0)
+    {
+        *SP = chars;
+    }
+    if (strcmp(regName, "bp") == 0)
+    {
+        *BP = chars;
+    }
+    if (strcmp(regName, "si") == 0)
+    {
+        *SI = chars;
+    }
+    if (strcmp(regName, "di") == 0)
+    {
+        *DI = chars;
+    }
+}
+
+
 //the function that does everything
 int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned int lenght_of_buffer,char* buffer, char* filename){
     unsigned int end_index = 32*2 + lenght_of_buffer*2;
@@ -1059,7 +1097,6 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
     short SI = 0;
     short DI = 0;
     char* FLAGS = "----";
-
     while (index<end_index)
     {
         memset(hex_string,0,sizeof(hex_string));
