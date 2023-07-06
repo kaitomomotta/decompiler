@@ -1044,7 +1044,11 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer,cha
 
 void PushRegister(short chars, const char* regName, short* AX, short* BX, short* CX, short* DX, short* SP, short* BP, short* SI, short* DI)
 {
-    chars= chars%65535;
+    while (chars>32767)
+    {
+        chars-=65536;
+    }
+    
     if (strcmp(regName, "ax") == 0)
     {
         *AX = chars;
@@ -1097,6 +1101,7 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
     short SI = 0;
     short DI = 0;
     char* FLAGS = "----";
+
     while (index<end_index)
     {
         memset(hex_string,0,sizeof(hex_string));
@@ -1110,14 +1115,14 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         hexToBin(hex_string,bin_string);
 
 
-        printf("%04x ",AX);
-        printf("%04x ",BX);
-        printf("%04x ",CX);
-        printf("%04x ",DX);
-        printf("%04x ",SP);
-        printf("%04x ",BP);
-        printf("%04x ",SI);
-        printf("%04x ",DI);
+        printf("%04hx ",AX);
+        printf("%04hx ",BX);
+        printf("%04hx ",CX);
+        printf("%04hx ",DX);
+        printf("%04hx ",SP);
+        printf("%04hx ",BP);
+        printf("%04hx ",SI);
+        printf("%04hx ",DI);
         printf("%s ",FLAGS);
 
         char* hexxxval;
@@ -1135,6 +1140,18 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1')
         {
             char* message = InterGeneric_Process_One(sub_str,&index,&bin_index,hex_string,bin_string,0,5,0,4,0,0,6,"mov ",", ","",2);
+            char substring1[3];  // Indexes 4 to 5 (2 characters + null terminator)
+            char substring2[5];  // Indexes 8 to 11 (4 characters + null terminator)
+            
+            // Extract substring from indexes 4 to 5
+            strncpy(substring1, message + 4, 2);
+            substring1[2] = '\0';  // Add null terminator
+            
+            // Extract substring from indexes 8 to 11
+            strncpy(substring2, message + 8, 4);
+            substring2[4] = '\0';  // Add null terminator
+            printf("%d",(short)strtol(substring2, NULL, 16));
+            PushRegister((short)strtol(substring2, NULL, 16), substring1, &AX, &BX, &CX, &DX, &SP, &BP, &SI, &DI);
             printf("%s",message);
             free(message);
             continue;
