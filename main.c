@@ -1150,7 +1150,6 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
             // Extract substring from indexes 8 to 11
             strncpy(substring2, message + 8, 4);
             substring2[4] = '\0';  // Add null terminator
-            printf("%d",(short)strtol(substring2, NULL, 16));
             PushRegister((short)strtol(substring2, NULL, 16), substring1, &AX, &BX, &CX, &DX, &SP, &BP, &SI, &DI);
             printf("%s",message);
             free(message);
@@ -1211,63 +1210,73 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         //ADD Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"add ", ", ","",0);
+            char* message =InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"add ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //ADC Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"adc ", ", ","",0);
+            char* message =InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"adc ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //SUB Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"sub ", ", ","",0);
+            char* message = InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"sub ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //SSB Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"ssb ", ", ","",0);
+            char* message =InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"ssb ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //CMP Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"cmp ", ", ","",0);
+            char* message =InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"cmp ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //AND Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"and ", ", ","",0);
+            char* message =InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"and ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //OR Reg Memory with register to either
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"or ", ", ","",0);
+            char* message = InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"or ", ", ","",0);
+            printf("%s",message);
             continue;
         }
         
         //XOR Reg Memory with register to either
+        //TODO
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"xor ", ", ", "",0);
+            char* message=InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"xor ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 
         //MOV Register/Memory to/from Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0')
         {
-            InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"mov ", ", ", "",0);
+            char* message =InterGeneric_Process(sub_str,&index,&bin_index,hex_string,bin_string,8,10,6,7,13,0,4,"mov ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 

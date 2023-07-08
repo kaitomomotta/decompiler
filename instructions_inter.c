@@ -268,11 +268,12 @@ void InterGeneric_Fixed_PortVAR(char* sub_str,int* index, int* bin_index,char* h
     *bin_index+=8;
 }
 
-void InterGeneric_Process(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
+char* InterGeneric_Process(char* sub_str,int* index, int* bin_index,char* hex_string,char* bin_string,
     int mod_index,int reg_index, int d_index,int w_index,int rm_index,int s_index, int hex_length,
     char* left, char* middle, char* right,int disp)
 {
     char printstr[]={' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\0'};
+    char* message = malloc(100 * sizeof(char));
     char* reg;
     char* rm;
     //find reg
@@ -352,14 +353,14 @@ void InterGeneric_Process(char* sub_str,int* index, int* bin_index,char* hex_str
             if (sub_str[d_index]=='0')
             {
                 //d==0
-                if (data[0]==0) printf("%s[%s]%s%s%s\n",left, rm, middle, reg, right);
-                else printf("%s[%s]%s%s%s\n",left, data, middle, reg, right);
+                if (data[0]==0) sprintf(message,"%s[%s]%s%s%s\n",left, rm, middle, reg, right);
+                else sprintf(message,"%s[%s]%s%s%s\n",left, data, middle, reg, right);
             }
             else
             {
                 //d==1
-                if (data[0]==0) printf("%s%s%s[%s]%s\n",left, reg, middle,rm, right);
-                else printf("%s%s%s[%s]%s\n",left, reg, middle,data, right);
+                if (data[0]==0) sprintf(message,"%s%s%s[%s]%s\n",left, reg, middle,rm, right);
+                else sprintf(message,"%s%s%s[%s]%s\n",left, reg, middle,data, right);
             }
         }
         else
@@ -367,14 +368,14 @@ void InterGeneric_Process(char* sub_str,int* index, int* bin_index,char* hex_str
             if (sub_str[d_index]=='0')
             {
                 //d==0
-                if (data[0]==0) printf("%s[%s%s]%s%s%s\n",left, rm,dispstr, middle, reg, right);
-                else printf("%s[%s%s]%s%s%s\n",left, data,dispstr, middle, reg, right);
+                if (data[0]==0) sprintf(message,"%s[%s%s]%s%s%s\n",left, rm,dispstr, middle, reg, right);
+                else sprintf(message,"%s[%s%s]%s%s%s\n",left, data,dispstr, middle, reg, right);
             }
             else
             {
                 //d==1
-                if (data[0]==0) printf("%s%s%s[%s%s]%s\n",left, reg, middle,rm,dispstr, right);
-                else printf("%s%s%s[%s%s]%s\n",left, reg, middle,data,dispstr, right);
+                if (data[0]==0) sprintf(message,"%s%s%s[%s%s]%s\n",left, reg, middle,rm,dispstr, right);
+                else sprintf(message,"%s%s%s[%s%s]%s\n",left, reg, middle,data,dispstr, right);
             }
         }
     }
@@ -383,18 +384,18 @@ void InterGeneric_Process(char* sub_str,int* index, int* bin_index,char* hex_str
         if (sub_str[d_index]=='0')
         {
             //d==0
-            printf("%s%s%s%s%s\n",left, rm, middle, reg, right);
+            sprintf(message,"%s%s%s%s%s\n",left, rm, middle, reg, right);
         }
         else
         {
             //d==1
-            printf("%s%s%s%s%s\n",left, reg, middle,rm, right);
+            sprintf(message,"%s%s%s%s%s\n",left, reg, middle,rm, right);
         }
     }
     
     *index+=hex_length;
     *bin_index+=hex_length*4;
-    return;
+    return(message);
 
 }
 
