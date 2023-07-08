@@ -1168,42 +1168,48 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         //IN Fixed port
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0')
         {
-            InterGeneric_Fixed_Port(sub_str,&index,&bin_index,hex_string,"in ");
+            char* message=InterGeneric_Fixed_Port(sub_str,&index,&bin_index,hex_string,"in ");
+            printf("%s",message);
             continue;
         }
 
         //OUT Fixed port
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1')
         {
-            InterGeneric_Fixed_Port(sub_str,&index,&bin_index,hex_string,"out ");
+            char* message=InterGeneric_Fixed_Port(sub_str,&index,&bin_index,hex_string,"out ");
+            printf("%s",message);
             continue;
         }
 
         //IN variable port
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0')
         {
-            InterGeneric_Fixed_PortVAR(sub_str,&index,&bin_index,hex_string,"in ");
+            char* message =InterGeneric_Fixed_PortVAR(sub_str,&index,&bin_index,hex_string,"in ");
+            printf("%s",message);
             continue;
         }
 
         //OUT variable port
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1')
         {
-            InterGeneric_Fixed_PortVAR(sub_str,&index,&bin_index,hex_string,"out ");
+            char* message = InterGeneric_Fixed_PortVAR(sub_str,&index,&bin_index,hex_string,"out ");
+            printf("%s",message);
             continue;
         }
 
         //MOV Register/Memory to Segment Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0'&&bin_string[bin_index+10]=='0')
         {
-            InterGeneric_Process_NODW_Segment(sub_str,&index,&bin_index,hex_string,bin_string,8,11,13,4,"mov ", ", ","",0,0);
+            char* message = InterGeneric_Process_NODW_Segment(sub_str,&index,&bin_index,hex_string,bin_string,8,11,13,4,"mov ", ", ","",0,0);
+            printf("%s",message);
             continue;
         }
 
         //MOV Register/Memory to Segment Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0'&&bin_string[bin_index+10]=='0')
         {
-            InterGeneric_Process_NODW_Segment(sub_str,&index,&bin_index,hex_string,bin_string,8,11,13,4,"mov ", ", ","",0,1);
+            char* message = InterGeneric_Process_NODW_Segment(sub_str,&index,&bin_index,hex_string,bin_string,8,11,13,4,"mov ", ", ","",0,1);
+            printf("%s",message);
             continue;
         }
 
@@ -1283,168 +1289,192 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         //SHL/SAL Shift Logical/Arithmetic Left
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"shl ", ", ", "",0);
+            char* message=InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"shl ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 
         //SHR shift logical right
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"shr ", ", ", "",0);
+            char* message=InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"shr ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 
         //SAR shift arithmetic right
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"sar ", ", ", "",0);
+            char* message=InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"sar ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 
         //ROL rotate left
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rol ", ", ", "",0);
+            char* message=InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rol ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 
         //ROR rotate right
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"ror ", ", ", "",0);
+            char* message=InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"ror ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 
         //RCL rotate through carry flag left
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rcl ", ", ", "",0);
+            char* message=InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rcl ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 
         //RCL rotate through carry right
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rcr ", ", ", "",0);
+            char* message=InterGeneric_Process_VW(sub_str,&index,&bin_index,hex_string,bin_string,8,6,7,14,4,"rcr ", ", ", "",0);
+            printf("%s",message);
             continue;
         }
 
         //LEA  Load EA to Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"lea ", ", ","",0);
+            char* message=InterGeneric_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"lea ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //LDS load pointer to DS
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"lds ", ", ","",0);
+            char* message=InterGeneric_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"lds ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //LES load pointer to ES
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"les ", ", ","",0);
+            char* message=InterGeneric_Process_NODW(sub_str,&index,&bin_index,hex_string,bin_string,8,10,13,4,"les ", ", ","",0);
+            printf("%s",message);
             continue;
         }
 
         //CALL Indirect within segment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"call ","",0);
+            char* message=InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"call ","",0);
+            printf("%s",message);
             continue;
         }
 
         //PUsh Register/Memory
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"push ","",0);
+            char* message=InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"push ","",0);
+            printf("%s",message);
             continue;
         }
 
         //Neg change sign
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"neg ","",0);
+            char* message=InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"neg ","",0);
+            printf("%s",message);
             continue;
         }
 
         //DEC register/memory
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"dec ","",0);
+            char* message=InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"dec ","",0);
+            printf("%s",message);
             continue;
         }
 
         //INC register/memory
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"inc ","",0);
+            char* message=InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"inc ","",0);
+            printf("%s",message);
             continue;
         }
 
         //MUL multiply (unsigned)
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"mul ","",0);
+            char* message=InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"mul ","",0);
+            printf("%s",message);
             continue;
         }
 
         //IMUL integer multiply (signed)
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"imul ","",0);
+            char* message=InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"imul ","",0);
+            printf("%s",message);
             continue;
         }
 
         //DIV divide (unsigned)
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"div ","",0);
+            char* message=InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"div ","",0);
+            printf("%s",message);
             continue;
         }
 
         //IDIV integer divide (signed)
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"idiv ","",0);
+            char* message=InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"idiv ","",0);
+            printf("%s",message);
             continue;
         }
 
         //NOT invert
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"not ","",0);
+            char* message=InterGeneric_Process_NODREG(sub_str,&index,&bin_index,hex_string,bin_string,7,8,13,4,"not ","",0);
+            printf("%s",message);
             continue;
         }
 
         //POP register/memory
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"pop ","",0);
+            char* message=InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"pop ","",0);
+            printf("%s",message);
             continue;
         }
 
         //CALL indirect intersegment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='1'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"call ","",0);
+            char* message=InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"call ","",0);
+            printf("%s",message);
             continue;
         }
 
         //JMP indirect within segment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='0')
         {
-            InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"jmp ","",0);
+            char* message=InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"jmp ","",0);
+            printf("%s",message);
             continue;
         }
 
         //JMP indirect within segment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&bin_string[bin_index+10]=='1'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1')
         {
-            InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"jmp ","",0);
+            char* message=InterGeneric_Process_NODWREG(sub_str,&index,&bin_index,hex_string,bin_string,8,13,4,"jmp ","",0);
+            printf("%s",message);
             continue;
         }
 
@@ -1453,10 +1483,13 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"add ", ", ", "",0,4);
+                char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"add ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"add ", ", ", "",0,4);
-
+            else {
+                char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"add ", ", ", "",0,4);
+                printf("%s",message);
+            }
             continue;
         }
 
@@ -1465,10 +1498,13 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"adc ", ", ", "",0,4);
+                char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"adc ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"adc ", ", ", "",0,4);
-
+            else {
+                char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"adc ", ", ", "",0,4);
+                printf("%s",message);
+            }
             continue;
         }
 
@@ -1477,10 +1513,13 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"sub ", ", ", "",0,4);
+                char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"sub ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"sub ", ", ", "",0,4);
-
+            else {
+                char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"sub ", ", ", "",0,4);
+                printf("%s",message);
+            }
             continue;
         }
 
@@ -1489,9 +1528,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"sub ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"sub ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"sub ", ", ", "",0,4);
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"sub ", ", ", "",0,4);
+            printf("%s",message);
+            }
 
             continue;
         }
@@ -1501,10 +1543,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"add ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"add ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"add ", ", ", "",0,4);
-
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"add ", ", ", "",0,4);
+            printf("%s",message);
+            }
             continue;
         }
 
@@ -1513,10 +1557,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"adc ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"adc ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"adc ", ", ", "",0,4);
-
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"adc ", ", ", "",0,4);
+            printf("%s",message);
+            }
             continue;
         }
 
@@ -1525,9 +1571,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"ssb ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"ssb ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"ssb ", ", ", "",0,4);
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"ssb ", ", ", "",0,4);
+            printf("%s",message);
+            }
 
             continue;
         }
@@ -1537,9 +1586,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"cmp ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"cmp ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"cmp ", ", ", "",0,4);
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"cmp ", ", ", "",0,4);
+            printf("%s",message);
+            }
 
             continue;
         }
@@ -1549,9 +1601,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"and ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"and ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"and ", ", ", "",0,4);
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"and ", ", ", "",0,4);
+            printf("%s",message);
+            }
 
             continue;
         }
@@ -1561,9 +1616,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"test ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"test ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"test ", ", ", "",0,4);
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"test ", ", ", "",0,4);
+            printf("%s",message);
+            }
 
             continue;
         }
@@ -1573,9 +1631,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"or ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"or ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"or ", ", ", "",0,4);
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"or ", ", ", "",0,4);
+            printf("%s",message);
+            }
 
             continue;
         }
@@ -1585,10 +1646,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"xor ", ", ", "",0,4);
+                char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,8,"xor ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"xor ", ", ", "",0,4);
-
+            else {char* message=InterGeneric_Process_ACCU(sub_str,&index,&bin_index,hex_string,bin_string,7,6,"xor ", ", ", "",0,4);
+            printf("%s",message);
+            }
             continue;
         }
 
@@ -1597,9 +1660,11 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"ssb ", ", ", "",0,4);
+                char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"ssb ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"ssb ", ", ", "",0,4);
+            else {char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"ssb ", ", ", "",0,4);
+            printf("%s",message);}
 
             continue;
         }
@@ -1609,9 +1674,11 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+6]=='0'&&bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"cmp ", ", ", "",0,4);
+                char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"cmp ", ", ", "",0,4);
+                printf("%s",message);
             }
-            else InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"cmp ", ", ", "",0,4);
+            else {char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"cmp ", ", ", "",0,4);
+            printf("%s",message);}
 
             continue;
         }
@@ -1619,7 +1686,8 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         //JNB immediate to Register
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnb ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnb ","",2,2);
+            printf("%s",message);
             continue;
         }
 
@@ -1628,9 +1696,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"test ",",","",2);
+                char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"test ",",","",2);
+                printf("%s",message);
             }
-            InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"test ",", ","",2);
+            else{char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"test ",", ","",2);
+            printf("%s",message);
+            }
             continue;
         }
 
@@ -1639,9 +1710,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"and ",",","",2);
+                char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"and ",",","",2);
+                printf("%s",message);
             }
-            InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"and ",", ","",2);
+            else{char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"and ",", ","",2);
+            printf("%s",message);
+            }
             continue;
         }
 
@@ -1650,9 +1724,11 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"mov ",",","",2);
+                char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"mov ",",","",2);
+                printf("%s",message);
             }
-            InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"mov ",", ","",2);
+            else{char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"mov ",", ","",2);
+            printf("%s",message);}
             continue;
         }
 
@@ -1661,9 +1737,12 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"or ",",","",2);
+                char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"or ",",","",2);
+                printf("%s",message);
             }
-            InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"or ",", ","",2);
+            else{char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"or ",", ","",2);
+            printf("%s",message);
+            }
             continue;
         }
 
@@ -1672,212 +1751,244 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         {
             if (bin_string[bin_index+7]=='1')
             {
-                InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"xor ",",","",2);
+                char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,8,4,"xor ",",","",2);
+                printf("%s",message);
             }
-            InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"xor ",", ","",2);
+            else{char* message=InterGeneric_Process_IMMEDIATE(sub_str,&index,&bin_index,hex_string,bin_string,8,7,13,6,4,"xor ",", ","",2);
+            printf("%s",message);
+            }
             continue;
         }
 
         //JNE Jump on Not Equal/Not Zero
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jne ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jne ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JE/JZ Jump on Equal/Zero
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"je ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"je ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JL/JNGE Jump on Less/Not Greater or Equal
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jl ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jl ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JLE/JNG Jump on Less or Equal/ Not Greater
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jle ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jle ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JB/JNAE Jump on Below/Not Above or Equal
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jb ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jb ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JBE/JNA Jump on Below or Equal/Not Above
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jbe ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jbe ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JP/JPE Jump on Parity/Parity Even
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jp ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jp ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JO Jump on Overflow
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jo ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jo ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JS Jump on Sign
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"js ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"js ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JNL/JGE Jump on not less/greater or equal
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnl ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnl ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JNLE/JG Jump on Not less or equal/greater
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnle ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnle ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JNBE/JA Jump on Not below or equal/above
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnbe ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnbe ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JNP/JPO Jump on Not below or equal/above
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnp ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jnp ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JNO Jump on not overflow
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jno ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jno ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JNS jump on not sign
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jns ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jns ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //LOOP Loop CX times
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loop ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loop ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //LOOPZ/LOOPE loop while zero/equal
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loopz ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loopz ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //LOOPNZ/LOOPNE loop while not zero/equal
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loopnz ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"loopnz ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //JCXZ jump on CX zero
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jcxz ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jcxz ","",2,2);
+            printf("%s",message);
             continue;
         }
 
         //PUSH Register
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0')
         {
-            InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"push ","");
+            char* message=InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"push ","");
+            printf("%s",message);
             continue;
         }
 
         //DEC Register
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1')
         {
-            InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"dec ","");
+            char* message=InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"dec ","");
+            printf("%s",message);
             continue;
         }
 
         //POP Register
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1')
         {
-            InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"pop ","");
+            char* message=InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"pop ","");
+            printf("%s",message);
             continue;
         }
 
         //XCHG Register
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0')
         {
-            InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"xchg ","");
+            char* message=InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"xchg ","");
+            printf("%s",message);
             continue;
         }
 
         //INC Register
         if (sub_str[0]=='0'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0')
         {
-            InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"inc ","");
+            char* message=InterGeneric_Process_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,5,2,"inc ","");
+            printf("%s",message);
             continue;
         }
 
         //PUSH Segment Register
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_Segment_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,3,2,"push ","");
+            char* message=InterGeneric_Process_Segment_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,3,2,"push ","");
+            printf("%s",message);
             continue;
         }
 
         //POP Segment Register
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_Segment_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,3,2,"pop ","");
+            char* message=InterGeneric_Process_Segment_REGISTER(sub_str,&index,&bin_index,hex_string,bin_string,3,2,"pop ","");
+            printf("%s",message);
             continue;
         }
 
         //CALL Direct Within Segment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,6,"call ","",2,4);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,6,"call ","",2,4);
+            printf("%s",message);
             continue;
         }
 
         //JMP Direct within segment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,6,"jmp ","",2,4);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,6,"jmp ","",2,4);
+            printf("%s",message);
             continue;
         }
 
         //JMP Direct within segment-short
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jmp short ","",2,2);
+            char* message=InterGeneric_Process_JUMP(sub_str,&index,&bin_index,hex_string,bin_string,4,"jmp short ","",2,2);
+            printf("%s",message);
             continue;
         }
 
@@ -1885,196 +1996,224 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
         //INT Type 3
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"int","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"int","");
+            printf("%s",message);
             continue;
         }
 
         //INTO
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"into","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"into","");
+            printf("%s",message);
             continue;
         }
 
         //IRET
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"iret","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"iret","");
+            printf("%s",message);
             continue;
         }
 
         //CLC
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"clc","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"clc","");
+            printf("%s",message);
             continue;
         }
 
         //CMC
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cmc","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cmc","");
+            printf("%s",message);
             continue;
         }
 
         //STC
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"stc","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"stc","");
+            printf("%s",message);
             continue;
         }
 
         //CLD
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cld","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cld","");
+            printf("%s",message);
             continue;
         }
 
         //STD
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"std","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"std","");
+            printf("%s",message);
             continue;
         }
 
         //CLI
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cli","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cli","");
+            printf("%s",message);
             continue;
         }
 
         //STI
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"sti","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"sti","");
+            printf("%s",message);
             continue;
         }
 
         //HLT
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"hlt","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"hlt","");
+            printf("%s",message);
             continue;
         }
 
         //WAIT
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"wait","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"wait","");
+            printf("%s",message);
             continue;
         }
 
         //LOCK
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"lock","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"lock","");
+            printf("%s",message);
             continue;
         }
 
         //AAA
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"aaa","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"aaa","");
+            printf("%s",message);
             continue;
         }
 
         //BAA
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"baa","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"baa","");
+            printf("%s",message);
             continue;
         }
 
         //AAS
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"aas","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"aas","");
+            printf("%s",message);
             continue;
         }
 
         //AAS
         if (sub_str[0]=='0'&&sub_str[1]=='0'&&sub_str[2]=='1'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"das","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"das","");
+            printf("%s",message);
             continue;
         }
 
         //AAM
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0'&&bin_string[bin_index+8]=='0'&&bin_string[bin_index+9]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1'&&bin_string[bin_index+13]=='0'&&bin_string[bin_index+14]=='1'&&bin_string[bin_index+15]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,4,"aam","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,4,"aam","");
+            printf("%s",message);
             continue;
         }
 
         //AAD
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1'&&bin_string[bin_index+8]=='0'&&bin_string[bin_index+9]=='0'&&bin_string[bin_index+10]=='0'&&bin_string[bin_index+11]=='0'&&bin_string[bin_index+12]=='1'&&bin_string[bin_index+13]=='0'&&bin_string[bin_index+14]=='1'&&bin_string[bin_index+15]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,4,"aad","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,4,"aad","");
+            printf("%s",message);
             continue;
         }
 
         //CBW
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cbw","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cbw","");
+            printf("%s",message);
             continue;
         }
 
         //CWD
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cwd","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"cwd","");
+            printf("%s",message);
             continue;
         }
 
         //RET Within Segment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='0'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"ret","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"ret","");
+            printf("%s",message);
             continue;
         }
 
         //RET Intersegment
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='0'&&sub_str[4]=='1'&&sub_str[5]=='0'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"ret","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"ret","");
+            printf("%s",message);
             continue;
         }
 
         //XLAT 
         if (sub_str[0]=='1'&&sub_str[1]=='1'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='0'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"xlat","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"xlat","");
+            printf("%s",message);
             continue;
         }
 
         //LAHF 
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"lahf","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"lahf","");
+            printf("%s",message);
             continue;
         }
 
         //SAHF 
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='1'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"sahf","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"sahf","");
+            printf("%s",message);
             continue;
         }
 
         //PUSHF 
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='0')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"pushf","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"pushf","");
+            printf("%s",message);
             continue;
         }
 
         //POPF 
         if (sub_str[0]=='1'&&sub_str[1]=='0'&&sub_str[2]=='0'&&sub_str[3]=='1'&&sub_str[4]=='1'&&sub_str[5]=='1'&&sub_str[6]=='0'&&sub_str[7]=='1')
         {
-            InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"popf","");
+            char* message=InterGeneric_Process_NOTHING(sub_str,&index,&bin_index,hex_string,bin_string,2,"popf","");
+            printf("%s",message);
             continue;
         }
 
