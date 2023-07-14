@@ -3,6 +3,7 @@
 #include <string.h>
 #include "instructions.c"
 #include "instructions_inter.c"
+#include "parser.c"
 
 // Convert a single hexadecimal character to its binary representation
 char* hexCharToBin(char c)
@@ -1042,48 +1043,6 @@ int process(char* hex_string, char* bin_string,unsigned int lenght_of_buffer,cha
     printf("\n");
 }
 
-void PushRegister(short chars, const char* regName, short* AX, short* BX, short* CX, short* DX, short* SP, short* BP, short* SI, short* DI)
-{
-    while (chars>32767)
-    {
-        chars-=65536;
-    }
-    
-    if (strcmp(regName, "ax") == 0)
-    {
-        *AX = chars;
-    }
-    if (strcmp(regName, "bx") == 0)
-    {
-        *BX = chars;
-    }
-    if (strcmp(regName, "cx") == 0)
-    {
-        *CX = chars;
-    }
-    if (strcmp(regName, "dx") == 0)
-    {
-        *DX = chars;
-    }
-    if (strcmp(regName, "sp") == 0)
-    {
-        *SP = chars;
-    }
-    if (strcmp(regName, "bp") == 0)
-    {
-        *BP = chars;
-    }
-    if (strcmp(regName, "si") == 0)
-    {
-        *SI = chars;
-    }
-    if (strcmp(regName, "di") == 0)
-    {
-        *DI = chars;
-    }
-}
-
-
 //the function that does everything
 int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned int lenght_of_buffer,char* buffer, char* filename){
     unsigned int end_index = 32*2 + lenght_of_buffer*2;
@@ -1142,6 +1101,11 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
             char* message = InterGeneric_Process_One(sub_str,&index,&bin_index,hex_string,bin_string,0,5,0,4,0,0,6,"mov ",", ","",2);
             char substring1[3];  // Indexes 4 to 5 (2 characters + null terminator)
             char substring2[5];  // Indexes 8 to 11 (4 characters + null terminator)
+            char* arg1 = malloc(10 * sizeof(char));
+            char* arg2 = malloc(10 * sizeof(char));
+            //printf(data);
+            //printf(get_adress(data,"0002"));
+            //system("mmvm -m 1s.out");
             
             // Extract substring from indexes 4 to 5
             strncpy(substring1, message + 4, 2);
@@ -1485,10 +1449,52 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
             {
                 char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,8,"add ", ", ", "",0,4);
                 printf("%s",message);
+                char substring1[3];  // Indexes 4 to 5 (2 characters + null terminator)
+                char substring2[5];  // Indexes 8 to 11 (4 characters + null terminator)
+                char* arg1 = malloc(10 * sizeof(char));
+                char* arg2 = malloc(10 * sizeof(char));
+                //printf(data);
+                //printf(get_adress(data,"0002"));
+                //system("mmvm -m 1s.out");
+                
+                // Extract substring from indexes 4 to 5
+                strncpy(substring1, message + 4, 2);
+                substring1[2] = '\0';  // Add null terminator
+                
+                // Extract substring from indexes 8 to 11
+                strncpy(substring2, message + 8, 4);
+                substring2[4] = '\0';  // Add null terminator
+                short result = GetRegister(substring1, AX, BX, CX, DX, SP, BP, SI, DI) + ((short)strtol(substring2, NULL, 16));
+
+                PushRegister(result, substring1, &AX, &BX, &CX, &DX, &SP, &BP, &SI, &DI);
+                printf("%s",message);
+                free(message);
+                continue;
             }
             else {
                 char* message=InterGeneric_Process_NOREG_S(sub_str,&index,&bin_index,hex_string,bin_string,8,0,7,13,6,6,"add ", ", ", "",0,4);
                 printf("%s",message);
+                char substring1[3];  // Indexes 4 to 5 (2 characters + null terminator)
+                char substring2[3];  // Indexes 8 to 11 (4 characters + null terminator)
+                char* arg1 = malloc(10 * sizeof(char));
+                char* arg2 = malloc(10 * sizeof(char));
+                //printf(data);
+                //printf(get_adress(data,"0002"));
+                //system("mmvm -m 1s.out");
+                
+                // Extract substring from indexes 4 to 5
+                strncpy(substring1, message + 4, 2);
+                substring1[2] = '\0';  // Add null terminator
+                
+                // Extract substring from indexes 8 to 11
+                strncpy(substring2, message + 8, 2);
+                substring2[2] = '\0';  // Add null terminator
+                //printf("%s",substring2);
+                //printf("%i",(short)strtol(substring2, NULL, 16));
+                short result = GetRegister(substring1, AX, BX, CX, DX, SP, BP, SI, DI) + ((short)strtol(substring2, NULL, 16));
+
+                PushRegister(result, substring1, &AX, &BX, &CX, &DX, &SP, &BP, &SI, &DI);
+                free(message);
             }
             continue;
         }
@@ -2232,8 +2238,30 @@ int processinterpreter(char* data,char* hex_string, char* bin_string,unsigned in
     printf("\n");
 }
 
+//append 2 strings
+char* append(char* str1, char* str2)
+{
+    char* str3 = (char*)malloc(1 + strlen(str1)+ strlen(str2) );
+    strcpy(str3, str1);
+    strcat(str3, str2);
+    return str3;
+}
+
+//append 3 strings
+char* append3(char* str1, char* str2, char* str3)
+{
+    char* str4 = (char*)malloc(1 + strlen(str1)+ strlen(str2)+ strlen(str3) );
+    strcpy(str4, str1);
+    strcat(str4, str2);
+    strcat(str4, str3);
+    return str4;
+}
 
 int main(int argc,char *argv[]) {
+    /*char* str = "mm";
+    char* str2 = "vm -m ";
+    system(append3(str,str2,argv[2]));
+    return;*/
     FILE *file;
     char *buffer;
     long file_length;
